@@ -1,7 +1,10 @@
-// src/main/java/com/example/airqualityplatform/dto/request/AiPredictionBatchRequestDto.java
 package com.example.airqualityplatform.dto.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.util.List;
@@ -14,12 +17,15 @@ public class AiPredictionBatchRequestDto {
 
     /** ISO-8601 UTC timestamp (60분 예측 전체의 기준 시각) */
     @NotBlank(message = "timestamp를 입력하세요.")
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
-            message = "timestamp 포맷은 yyyy-MM-dd'T'HH:mm:ss'Z' 이어야 합니다.")
+    @Pattern(
+            regexp = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+            message = "timestamp 포맷은 yyyy-MM-dd'T'HH:mm:ss'Z' 이어야 합니다."
+    )
     private String timestamp;
 
     /** 센서별 예측 리스트 (각 항목당 60개 값) */
     @NotEmpty(message = "predictions를 하나 이상 포함해야 합니다.")
+    @Valid
     private List<SensorPredictionRequestDto> predictions;
 
     @Getter
@@ -33,22 +39,33 @@ public class AiPredictionBatchRequestDto {
         @NotBlank(message = "deviceId를 입력하세요.")
         private String deviceId;
 
-        @NotEmpty(message = "voc 예측값 리스트를 입력하세요.")
-        private List<@NotNull Double> voc;
+        @NotNull(message = "prediction payload를 입력하세요.")
+        @Valid
+        private PredictionPayload prediction;
 
-        @NotEmpty(message = "temperature 예측값 리스트를 입력하세요.")
-        private List<@NotNull Double> temperature;
+        @Getter
+        @Setter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class PredictionPayload {
 
-        @NotEmpty(message = "humidity 예측값 리스트를 입력하세요.")
-        private List<@NotNull Double> humidity;
+            @NotEmpty(message = "voc 예측값 리스트를 입력하세요.")
+            private List<@NotNull Double> voc;
 
-        @NotEmpty(message = "co2 예측값 리스트를 입력하세요.")
-        private List<@NotNull Double> co2;
+            @NotEmpty(message = "temperature 예측값 리스트를 입력하세요.")
+            private List<@NotNull Double> temperature;
 
-        @NotEmpty(message = "pm25_t 예측값 리스트를 입력하세요.")
-        private List<@NotNull Double> pm25_t;
+            @NotEmpty(message = "humidity 예측값 리스트를 입력하세요.")
+            private List<@NotNull Double> humidity;
 
-        @NotEmpty(message = "pm100_t 예측값 리스트를 입력하세요.")
-        private List<@NotNull Double> pm100_t;
+            @NotEmpty(message = "co2 예측값 리스트를 입력하세요.")
+            private List<@NotNull Double> co2;
+
+            @NotEmpty(message = "pm25_t 예측값 리스트를 입력하세요.")
+            private List<@NotNull Double> pm25_t;
+
+            @NotEmpty(message = "pm100_t 예측값 리스트를 입력하세요.")
+            private List<@NotNull Double> pm100_t;
+        }
     }
 }
