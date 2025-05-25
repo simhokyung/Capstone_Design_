@@ -25,14 +25,13 @@ public class AiPolicyListener {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @Transactional(readOnly = true)
     public void onPolicySend(AiPolicySendEvent evt) {
+        // fetch join 으로 devices+room을 미리 불러오기 때문에
         DeviceAutoControl control = controlRepo
                 .findWithDevicesAndRoomById(evt.getPolicyId())
                 .orElseThrow(() -> new IllegalStateException("정책이 없습니다. id=" + evt.getPolicyId()));
 
         AiPolicyRequestDto dto = DeviceAutoControlMapper.toAiDto(control);
-
         try {
             rt.postForEntity(AI_URL, dto, Void.class);
             log.info("AI 정책 전송 성공 –– policyId={}", dto.getPolicyId());
