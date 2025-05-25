@@ -54,6 +54,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/filters/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/filters/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/policies/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/policies/**").permitAll()
+
+
 
                         // AI 예측 API
                         .requestMatchers(HttpMethod.GET, "/ai/predictions").permitAll()

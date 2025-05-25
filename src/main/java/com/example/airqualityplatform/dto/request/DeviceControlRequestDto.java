@@ -27,5 +27,13 @@ public class DeviceControlRequestDto {
 
         @NotNull(message = "arguments는 null이 될 수 없습니다.")
         private List<Object> arguments;
+
+        /** 편의 생성자 추가 */
+        public Command(String component, String capability, String command, List<Object> arguments) {
+            this.component = component;
+            this.capability = capability;
+            this.command = command;
+            this.arguments = arguments;
+        }
     }
 }

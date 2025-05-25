@@ -1,6 +1,7 @@
+// src/main/java/com/example/airqualityplatform/dto/request/DeviceAutoControlRequestDto.java
 package com.example.airqualityplatform.dto.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,9 +24,4 @@ public class DeviceAutoControlRequestDto {
     @NotNull(message = "VOC 임계값을 입력하세요.")
     private Double vocThreshold;
 
-    @NotNull(message = "기기 전원 동작을 선택하세요.")
-    private Boolean actionPower;
-
-    @NotBlank(message = "동작 모드를 입력하세요.")
-    private String actionMode;
 }

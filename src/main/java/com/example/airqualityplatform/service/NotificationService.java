@@ -77,4 +77,9 @@ public class NotificationService {
         }
         notificationRepository.deleteById(id);
     }
+
+    public void notifyVentilation(String deviceId, int minuteOffset) {
+        // TODO: 이메일·푸시·웹소켓 등으로 환기 알림 구현
+        System.out.printf("⚠️ Device %s: %d분 후 환기 권장%n", deviceId, minuteOffset);
+    }
 }
