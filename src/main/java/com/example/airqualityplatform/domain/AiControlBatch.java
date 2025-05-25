@@ -20,6 +20,7 @@ public class AiControlBatch {
     private String deviceId;
 
     @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<AiControlSegment> segments = new ArrayList<>();
 
     public void addSegment(AiControlSegment seg) {
