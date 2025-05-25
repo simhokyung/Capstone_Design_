@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/ai/control")
+@RequestMapping("/ai/control")
 @RequiredArgsConstructor
 public class AiControlController {
 
@@ -24,7 +24,7 @@ public class AiControlController {
             @Valid @RequestBody AiControlBatchRequestDto dto
     ) {
         AiControlBatchResponseDto created = controlService.ingestControl(dto);
-        URI location = URI.create("/api/ai/control/" + created.getBatchId());
+        URI location = URI.create("/ai/control/" + created.getBatchId());
         return ResponseEntity.created(location).body(created);
     }
 

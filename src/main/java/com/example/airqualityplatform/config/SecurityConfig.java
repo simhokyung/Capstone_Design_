@@ -56,6 +56,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/filters/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/policies/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/policies/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/ai/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ai/**").permitAll()
 
 
 
