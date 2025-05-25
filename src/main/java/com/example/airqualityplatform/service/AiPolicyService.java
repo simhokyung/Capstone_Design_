@@ -2,7 +2,8 @@
 package com.example.airqualityplatform.service;
 
 import com.example.airqualityplatform.domain.DeviceAutoControl;
-import com.example.airqualityplatform.dto.mapper.DeviceAutoControlMapper;   // ← 추가
+import com.example.airqualityplatform.dto.mapper.DeviceAutoControlMapper;
+import com.example.airqualityplatform.dto.request.AiPolicyRequestDto;
 import com.example.airqualityplatform.repository.DeviceAutoControlRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.*;
@@ -25,14 +26,12 @@ public class AiPolicyService {
         DeviceAutoControl policy = repo.findById(controlId)
                 .orElseThrow(() -> new IllegalStateException("정책이 없습니다. id=" + controlId));
 
-        // DeviceAutoControlMapper.toAiDto(...) 가 반환하는 객체는
-        // AI API에 맞춘 별도의 DTO여야 합니다. 예를 들면:
-        // public static AiPolicyRequestDto toAiDto(DeviceAutoControl e) { ... }
+        AiPolicyRequestDto payload = DeviceAutoControlMapper.toAiDto(policy);
 
         try {
             rt.postForEntity(
                     "http://52.64.178.83:8000/receive/userstandard",
-                    DeviceAutoControlMapper.toAiDto(policy),
+                    payload,
                     Void.class
             );
             log.info("AI로 정책 전송 완료 id={}", controlId);

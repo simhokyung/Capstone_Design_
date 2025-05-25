@@ -1,3 +1,4 @@
+// src/main/java/com/example/airqualityplatform/service/DeviceAutoControlService.java
 package com.example.airqualityplatform.service;
 
 import com.example.airqualityplatform.domain.Device;
@@ -10,9 +11,7 @@ import com.example.airqualityplatform.repository.DeviceAutoControlRepository;
 import com.example.airqualityplatform.repository.DeviceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -25,9 +24,11 @@ public class DeviceAutoControlService {
 
     @Transactional
     public DeviceAutoControlResponseDto createAutoControl(DeviceAutoControlRequestDto dto) {
+        // 1) save policy
         DeviceAutoControl policy = DeviceAutoControlMapper.toEntity(dto, null);
         DeviceAutoControl saved = controlRepo.save(policy);
 
+        // 2) attach devices by room
         List<Device> devices = deviceRepo.findByRoom_RoomId(dto.getRoomId());
         if (devices.isEmpty()) {
             throw new ResourceNotFoundException("해당 방에 등록된 기기가 없습니다. roomId=" + dto.getRoomId());
@@ -36,8 +37,10 @@ public class DeviceAutoControlService {
         deviceRepo.saveAll(devices);
         saved.setDevices(devices);
 
-        // AI 전송은 별도 트랜잭션으로 격리
+        // 3) fire off AI call asynchronously
         aiPolicyService.sendPolicyToAiAsync(saved.getControlId());
+
+        // 4) return REST response
         return DeviceAutoControlMapper.toResponseDto(saved);
     }
 
@@ -49,28 +52,27 @@ public class DeviceAutoControlService {
     }
 
     @Transactional(readOnly = true)
-    public DeviceAutoControlResponseDto getAutoControlById(Long controlId) {
-        DeviceAutoControl entity = controlRepo.findById(controlId)
-                .orElseThrow(() -> new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + controlId));
-        return DeviceAutoControlMapper.toResponseDto(entity);
+    public DeviceAutoControlResponseDto getAutoControlById(Long id) {
+        DeviceAutoControl e = controlRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + id));
+        return DeviceAutoControlMapper.toResponseDto(e);
     }
 
     @Transactional
-    public DeviceAutoControlResponseDto updateAutoControl(Long controlId, DeviceAutoControlRequestDto dto) {
-        DeviceAutoControl existing = controlRepo.findById(controlId)
-                .orElseThrow(() -> new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + controlId));
+    public DeviceAutoControlResponseDto updateAutoControl(Long id, DeviceAutoControlRequestDto dto) {
+        DeviceAutoControl existing = controlRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + id));
         DeviceAutoControlMapper.toEntity(dto, existing);
         DeviceAutoControl saved = controlRepo.save(existing);
-
         aiPolicyService.sendPolicyToAiAsync(saved.getControlId());
         return DeviceAutoControlMapper.toResponseDto(saved);
     }
 
     @Transactional
-    public void deleteAutoControl(Long controlId) {
-        if (!controlRepo.existsById(controlId)) {
-            throw new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + controlId);
+    public void deleteAutoControl(Long id) {
+        if (!controlRepo.existsById(id)) {
+            throw new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + id);
         }
-        controlRepo.deleteById(controlId);
+        controlRepo.deleteById(id);
     }
 }
