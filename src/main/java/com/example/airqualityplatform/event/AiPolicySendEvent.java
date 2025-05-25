@@ -1,14 +1,12 @@
 // src/main/java/com/example/airqualityplatform/event/AiPolicySendEvent.java
 package com.example.airqualityplatform.event;
 
+import com.example.airqualityplatform.dto.request.AiPolicyRequestDto;
 import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-public class AiPolicySendEvent extends ApplicationEvent {
-    private final Long controlId;
-    public AiPolicySendEvent(Object source, Long controlId) {
-        super(source);
-        this.controlId = controlId;
-    }
+@RequiredArgsConstructor
+public class AiPolicySendEvent {
+    private final AiPolicyRequestDto payload;
 }

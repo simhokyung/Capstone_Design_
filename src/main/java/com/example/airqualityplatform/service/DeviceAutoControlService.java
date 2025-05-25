@@ -5,6 +5,7 @@ import com.example.airqualityplatform.domain.Device;
 import com.example.airqualityplatform.domain.DeviceAutoControl;
 import com.example.airqualityplatform.dto.mapper.DeviceAutoControlMapper;
 import com.example.airqualityplatform.dto.request.DeviceAutoControlRequestDto;
+import com.example.airqualityplatform.dto.request.AiPolicyRequestDto;
 import com.example.airqualityplatform.dto.response.DeviceAutoControlResponseDto;
 import com.example.airqualityplatform.event.AiPolicySendEvent;
 import com.example.airqualityplatform.exception.ResourceNotFoundException;
@@ -28,11 +29,11 @@ public class DeviceAutoControlService {
     /**
      * 1) 정책 저장
      * 2) 방(roomId) 내 모든 기기에 연결
-     * 3) 트랜잭션 커밋 후 AI 전송 이벤트 발행
+     * 3) 트랜잭션 커밋 후 AI 전송 이벤트에 DTO 실어서 발행
      */
     @Transactional
     public DeviceAutoControlResponseDto createAutoControl(DeviceAutoControlRequestDto dto) {
-        // 1) save policy entity
+        // 1) save policy
         DeviceAutoControl policy = DeviceAutoControlMapper.toEntity(dto, null);
         DeviceAutoControl saved = controlRepo.save(policy);
 
@@ -45,8 +46,9 @@ public class DeviceAutoControlService {
         deviceRepo.saveAll(devices);
         saved.setDevices(devices);
 
-        // 3) 커밋 이후 AI 전송 이벤트 발생
-        publisher.publishEvent(new AiPolicySendEvent(this, saved.getControlId()));
+        // 3) AI 전송용 DTO 생성 → 이벤트 발행
+        AiPolicyRequestDto aiDto = DeviceAutoControlMapper.toAiDto(saved);
+        publisher.publishEvent(new AiPolicySendEvent(aiDto));
 
         return DeviceAutoControlMapper.toResponseDto(saved);
     }
@@ -66,7 +68,8 @@ public class DeviceAutoControlService {
     }
 
     /**
-     * 정책 수정 시에도 트랜잭션 커밋 후 AI 전송 이벤트 발생
+     * 1) 정책 업데이트
+     * 2) 트랜잭션 커밋 후 AI 전송 이벤트에 DTO 실어서 발행
      */
     @Transactional
     public DeviceAutoControlResponseDto updateAutoControl(Long id, DeviceAutoControlRequestDto dto) {
@@ -75,7 +78,8 @@ public class DeviceAutoControlService {
         DeviceAutoControlMapper.toEntity(dto, existing);
         DeviceAutoControl saved = controlRepo.save(existing);
 
-        publisher.publishEvent(new AiPolicySendEvent(this, saved.getControlId()));
+        AiPolicyRequestDto aiDto = DeviceAutoControlMapper.toAiDto(saved);
+        publisher.publishEvent(new AiPolicySendEvent(aiDto));
 
         return DeviceAutoControlMapper.toResponseDto(saved);
     }
