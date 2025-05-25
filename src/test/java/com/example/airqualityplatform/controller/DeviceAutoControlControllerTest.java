@@ -3,6 +3,7 @@ package com.example.airqualityplatform.controller;
 import com.example.airqualityplatform.config.SecurityConfigTest;
 import com.example.airqualityplatform.dto.request.DeviceAutoControlRequestDto;
 import com.example.airqualityplatform.dto.response.DeviceAutoControlResponseDto;
+import com.example.airqualityplatform.service.DeviceAutoControlService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;

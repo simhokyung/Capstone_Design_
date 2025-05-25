@@ -6,12 +6,15 @@ import com.example.airqualityplatform.domain.DeviceAutoControl;
 import com.example.airqualityplatform.dto.mapper.DeviceAutoControlMapper;
 import com.example.airqualityplatform.dto.request.DeviceAutoControlRequestDto;
 import com.example.airqualityplatform.dto.response.DeviceAutoControlResponseDto;
+import com.example.airqualityplatform.event.AiPolicySendEvent;
 import com.example.airqualityplatform.exception.ResourceNotFoundException;
 import com.example.airqualityplatform.repository.DeviceAutoControlRepository;
 import com.example.airqualityplatform.repository.DeviceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -20,15 +23,20 @@ public class DeviceAutoControlService {
 
     private final DeviceAutoControlRepository controlRepo;
     private final DeviceRepository deviceRepo;
-    private final AiPolicyService aiPolicyService;
+    private final ApplicationEventPublisher publisher;
 
+    /**
+     * 1) 정책 저장
+     * 2) 방(roomId) 내 모든 기기에 연결
+     * 3) 트랜잭션 커밋 후 AI 전송 이벤트 발행
+     */
     @Transactional
     public DeviceAutoControlResponseDto createAutoControl(DeviceAutoControlRequestDto dto) {
-        // 1) save policy
+        // 1) save policy entity
         DeviceAutoControl policy = DeviceAutoControlMapper.toEntity(dto, null);
         DeviceAutoControl saved = controlRepo.save(policy);
 
-        // 2) attach devices by room
+        // 2) attach to devices
         List<Device> devices = deviceRepo.findByRoom_RoomId(dto.getRoomId());
         if (devices.isEmpty()) {
             throw new ResourceNotFoundException("해당 방에 등록된 기기가 없습니다. roomId=" + dto.getRoomId());
@@ -37,10 +45,9 @@ public class DeviceAutoControlService {
         deviceRepo.saveAll(devices);
         saved.setDevices(devices);
 
-        // 3) fire off AI call asynchronously
-        aiPolicyService.sendPolicyToAiAsync(saved.getControlId());
+        // 3) 커밋 이후 AI 전송 이벤트 발생
+        publisher.publishEvent(new AiPolicySendEvent(this, saved.getControlId()));
 
-        // 4) return REST response
         return DeviceAutoControlMapper.toResponseDto(saved);
     }
 
@@ -53,18 +60,23 @@ public class DeviceAutoControlService {
 
     @Transactional(readOnly = true)
     public DeviceAutoControlResponseDto getAutoControlById(Long id) {
-        DeviceAutoControl e = controlRepo.findById(id)
+        DeviceAutoControl entity = controlRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + id));
-        return DeviceAutoControlMapper.toResponseDto(e);
+        return DeviceAutoControlMapper.toResponseDto(entity);
     }
 
+    /**
+     * 정책 수정 시에도 트랜잭션 커밋 후 AI 전송 이벤트 발생
+     */
     @Transactional
     public DeviceAutoControlResponseDto updateAutoControl(Long id, DeviceAutoControlRequestDto dto) {
         DeviceAutoControl existing = controlRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + id));
         DeviceAutoControlMapper.toEntity(dto, existing);
         DeviceAutoControl saved = controlRepo.save(existing);
-        aiPolicyService.sendPolicyToAiAsync(saved.getControlId());
+
+        publisher.publishEvent(new AiPolicySendEvent(this, saved.getControlId()));
+
         return DeviceAutoControlMapper.toResponseDto(saved);
     }
 
