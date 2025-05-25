@@ -1,21 +1,18 @@
-// src/main/java/com/example/airqualityplatform/dto/request/AiPolicyRequestDto.java
+// dto/request/AiPolicyRequestDto.java
 package com.example.airqualityplatform.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
 public class AiPolicyRequestDto {
     private Long policyId;
     private Long roomId;
     private Thresholds thresholds;
     private List<String> deviceIds;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     public static class Thresholds {
         private Double pm25;
         private Double pm100;

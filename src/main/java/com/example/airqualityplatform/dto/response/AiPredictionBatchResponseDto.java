@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class AiPredictionBatchDto {
+public class AiPredictionBatchResponseDto {
     private Long batchId;
     private Instant timestamp;
     private List<SensorPredictionDto> predictions;

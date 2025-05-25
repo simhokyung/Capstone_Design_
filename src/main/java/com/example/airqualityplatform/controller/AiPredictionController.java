@@ -1,28 +1,42 @@
 // src/main/java/com/example/airqualityplatform/controller/AiPredictionController.java
 package com.example.airqualityplatform.controller;
 
-import com.example.airqualityplatform.dto.response.AiPredictionBatchDto;
+import com.example.airqualityplatform.dto.request.AiPredictionBatchRequestDto;
+import com.example.airqualityplatform.dto.response.AiPredictionBatchResponseDto;
 import com.example.airqualityplatform.service.AiPredictionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/ai/predictions")
 @RequiredArgsConstructor
 public class AiPredictionController {
 
-    private final AiPredictionService aiPredictionService;
+    private final AiPredictionService svc;
 
-    /** 최신 배치 + 센서별 예측 한 번에 내려주기 */
-    @GetMapping("/latest")
-    public ResponseEntity<AiPredictionBatchDto> getLatest() {
-        return ResponseEntity.ok(aiPredictionService.getLatestBatchWithPredictions());
+    /* ---------- AI → 예측 수신 ---------- */
+    @PostMapping
+    public ResponseEntity<AiPredictionBatchResponseDto> receive(
+            @Valid @RequestBody AiPredictionBatchRequestDto dto) {
+
+        AiPredictionBatchResponseDto saved = svc.ingestPrediction(dto);
+        URI location = URI.create("/ai/predictions/" + saved.getBatchId());
+        return ResponseEntity.created(location).body(saved);
     }
 
-    /** 특정 배치 ID에 대한 예측 한 번에 내려주기 */
+    /* ---------- 최신 조회 ---------- */
+    @GetMapping("/latest")
+    public ResponseEntity<AiPredictionBatchResponseDto> latest() {
+        return ResponseEntity.ok(svc.getLatestBatchWithPredictions());
+    }
+
+    /* ---------- ID 조회 ---------- */
     @GetMapping("/{batchId}")
-    public ResponseEntity<AiPredictionBatchDto> getByBatch(@PathVariable Long batchId) {
-        return ResponseEntity.ok(aiPredictionService.getBatchWithPredictions(batchId));
+    public ResponseEntity<AiPredictionBatchResponseDto> byId(@PathVariable Long batchId) {
+        return ResponseEntity.ok(svc.getBatchWithPredictions(batchId));
     }
 }
