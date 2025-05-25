@@ -8,27 +8,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class AiPolicyListener {
+
     private final RestTemplate rt;
 
     @Async
-    @EventListener  // AFTER_COMMIT 로직 필요 없으니 일반 이벤트 리스너로
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onPolicySend(AiPolicySendEvent evt) {
-        AiPolicyRequestDto dto = evt.getPayload();
+        AiPolicyRequestDto payload = evt.getPayload();
         try {
             rt.postForEntity(
                     "http://52.64.178.83:8000/receive/userstandard",
-                    dto,
+                    payload,
                     Void.class
             );
-            log.info("AI로 정책 전송 완료 policyId={}", dto.getPolicyId());
+            log.info("AI로 정책 전송 완료 policyId={}", payload.getPolicyId());
         } catch (Exception ex) {
-            log.error("AI 정책 전송 실패 policyId={} err={}", dto.getPolicyId(), ex.getMessage());
+            log.error("AI 정책 전송 실패 policyId={} err={}",
+                    payload.getPolicyId(), ex.getMessage());
         }
     }
 }
