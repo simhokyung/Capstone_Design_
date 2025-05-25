@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
@@ -16,8 +17,8 @@ public class AiControlBatchRequestDto {
     private String deviceId;
 
     @NotEmpty
-    @JsonProperty("control_result")  // ✅ 이게 없으면 무조건 null 됨
-    private List<AiControlSegmentDto> control_result;
+    @JsonProperty("control_result")
+    private List<AiControlSegmentDto> segments = new ArrayList<>(); // ✅ 여기 중요
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor
     public static class AiControlSegmentDto {
