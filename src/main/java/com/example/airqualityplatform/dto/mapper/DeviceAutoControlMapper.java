@@ -1,4 +1,3 @@
-// src/main/java/com/example/airqualityplatform/dto/mapper/DeviceAutoControlMapper.java
 package com.example.airqualityplatform.dto.mapper;
 
 import com.example.airqualityplatform.domain.Device;
@@ -9,12 +8,8 @@ import com.example.airqualityplatform.dto.response.DeviceAutoControlResponseDto;
 
 import java.util.stream.Collectors;
 
-/**
- * 엔티티 ↔ DTO 변환 전용 유틸리티
- */
 public class DeviceAutoControlMapper {
 
-    /* 요청 DTO → 엔티티 */
     public static DeviceAutoControl toEntity(DeviceAutoControlRequestDto dto,
                                              DeviceAutoControl entity) {
         if (entity == null) entity = new DeviceAutoControl();
@@ -25,7 +20,6 @@ public class DeviceAutoControlMapper {
         return entity;
     }
 
-    /* 엔티티 → 응답 DTO */
     public static DeviceAutoControlResponseDto toResponseDto(DeviceAutoControl e) {
         DeviceAutoControlResponseDto dto = new DeviceAutoControlResponseDto();
         dto.setControlId(e.getControlId());
@@ -46,7 +40,6 @@ public class DeviceAutoControlMapper {
         return dto;
     }
 
-    /* 엔티티 → AI 서버 전송 DTO */
     public static AiPolicyRequestDto toAiDto(DeviceAutoControl e) {
         AiPolicyRequestDto dto = new AiPolicyRequestDto();
         dto.setPolicyId(e.getControlId());
@@ -64,7 +57,7 @@ public class DeviceAutoControlMapper {
 
         dto.setDeviceIds(
                 e.getDevices().stream()
-                        .map(Device::getDeviceId)   // SmartThings UUID
+                        .map(Device::getDeviceId)
                         .collect(Collectors.toList()));
 
         return dto;
