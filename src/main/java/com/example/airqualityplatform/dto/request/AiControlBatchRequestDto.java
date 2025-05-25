@@ -17,7 +17,7 @@ public class AiControlBatchRequestDto {
 
     @NotEmpty
     @JsonProperty("control_result")  // ✅ 이게 없으면 무조건 null 됨
-    private List<AiControlSegmentDto> controlResult;
+    private List<AiControlSegmentDto> control_result;
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor
     public static class AiControlSegmentDto {
