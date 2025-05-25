@@ -31,10 +31,6 @@ public class DeviceAutoControl {
     @Column
     private Double vocThreshold;
     // 자동 제어 시 적용될 동작
-    @Column(nullable = false)
-    private Boolean actionPower;    // true: 켜기, false: 끄기
-    @Column(nullable = false, length = 50)
-    private String actionMode;      // 예: "auto", "max", "medium" 등
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
