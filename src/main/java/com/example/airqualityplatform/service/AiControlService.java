@@ -41,7 +41,7 @@ public class AiControlService {
                 .deviceId(dto.getDeviceId())
                 .build();
 
-        dto.getControl_result().forEach(segDto ->
+        dto.getControlResult().forEach(segDto ->
                 batch.addSegment(
                         AiControlSegment.builder()
                                 .startMinute(segDto.getStartMinute())

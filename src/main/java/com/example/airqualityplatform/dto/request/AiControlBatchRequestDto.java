@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
@@ -17,8 +16,8 @@ public class AiControlBatchRequestDto {
     private String deviceId;
 
     @NotEmpty
-    @JsonProperty("control_result")
-    private List<AiControlSegmentDto> segments = new ArrayList<>(); // ✅ 여기 중요
+    @JsonProperty("control_result")  // ✅ JSON에서는 control_result로 받음
+    private List<AiControlSegmentDto> controlResult;  // ✅ Java에서는 camelCase 사용
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor
     public static class AiControlSegmentDto {
