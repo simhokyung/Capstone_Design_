@@ -19,6 +19,7 @@ public class AiPredictionBatch {
     @Column(nullable = false)
     private Instant timestamp;
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "batch",
             cascade = CascadeType.ALL,

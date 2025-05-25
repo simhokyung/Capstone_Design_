@@ -5,6 +5,7 @@ import com.example.airqualityplatform.domain.SensorPrediction;
 import com.example.airqualityplatform.dto.request.AiPredictionBatchRequestDto;
 import com.example.airqualityplatform.dto.response.AiPredictionBatchResponseDto;
 import com.example.airqualityplatform.dto.response.SensorPredictionDto;
+import com.example.airqualityplatform.exception.ResourceNotFoundException;
 import com.example.airqualityplatform.repository.AiPredictionBatchRepository;
 import com.example.airqualityplatform.repository.SensorPredictionRepository;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,13 @@ public class AiPredictionService {
     @Transactional(readOnly = true)
     public AiPredictionBatchResponseDto getLatestBatchWithPredictions() {
         AiPredictionBatch batch = batchRepo.findTopByOrderByTimestampDesc();
+        return toDto(batch);
+    }
+
+    @Transactional(readOnly = true)
+    public AiPredictionBatchResponseDto getBatchWithPredictions(Long batchId) {
+        AiPredictionBatch batch = batchRepo.findById(batchId)
+                .orElseThrow(() -> new ResourceNotFoundException("batchId=" + batchId + " 배치가 없습니다."));
         return toDto(batch);
     }
 
