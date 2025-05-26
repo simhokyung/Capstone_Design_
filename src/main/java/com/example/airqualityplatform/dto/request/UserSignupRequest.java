@@ -23,7 +23,7 @@ public class UserSignupRequest {
     @Size(max = 100)
     private String username;
 
-    @Pattern(regexp = "^01[016789]-\\d{3,4}-\\d{4}$",
+    @Pattern(regexp = "^01[016789]\\d{3,4}\\d{4}$",
             message = "전화번호 형식이 잘못되었습니다.")
     private String phoneNumber;
 
