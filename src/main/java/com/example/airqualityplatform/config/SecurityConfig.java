@@ -45,6 +45,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/measurements/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/sensors/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/sensors/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/sensors/**").permitAll()
+
+                        .requestMatchers(HttpMethod.PUT, "/rooms/**").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/rooms/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/homes/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/devices/**").permitAll()
@@ -56,6 +60,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/filters/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/policies/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/policies/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/policies/**").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/ai/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ai/**").permitAll()
 
