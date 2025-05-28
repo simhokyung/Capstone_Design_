@@ -2,8 +2,11 @@ package com.example.airqualityplatform.service;
 
 import com.example.airqualityplatform.domain.Measurement;
 import com.example.airqualityplatform.domain.Room;
-import com.example.airqualityplatform.dto.*;
 import com.example.airqualityplatform.dto.response.IndoorHistoryDto;
+import com.example.airqualityplatform.dto.response.IndoorHistoryDto.RoomDto;
+import com.example.airqualityplatform.dto.response.IndoorHistoryDto.SensorHeatDto;
+import com.example.airqualityplatform.dto.response.IndoorHistoryDto.SensorPositionDto;
+import com.example.airqualityplatform.dto.response.IndoorHistoryDto.TimeSliceDto;
 import com.example.airqualityplatform.repository.RoomRepository;
 import com.example.airqualityplatform.repository.MeasurementRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -35,13 +38,13 @@ public class IndoorHistoryService {
         List<Room> rooms = roomRepo.findAll();
 
         // 2) 구조 DTO 매핑
-        List<IndoorHistoryDto.RoomDto> structure = new ArrayList<>();
+        List<RoomDto> structure = new ArrayList<>();
         for (Room room : rooms) {
             List<List<Double>> poly = objectMapper.readValue(
                     room.getPolygon(),
                     new TypeReference<List<List<Double>>>() {}
             );
-            List<IndoorHistoryDto.SensorPositionDto> positions = room.getSensors().stream()
+            List<SensorPositionDto> positions = room.getSensors().stream()
                     .map(s -> IndoorHistoryDto.SensorPositionDto.builder()
                             .sensorId(s.getSensorId())
                             .x(s.getXCoordinate())
@@ -64,28 +67,14 @@ public class IndoorHistoryService {
             times.add(t);
         }
 
-        // 4) 측정값 조회 및 맵핑 (sensorId -> List<Measurement>)
-        Map<Long, List<Measurement>> measMap = new HashMap<>();
-        for (IndoorHistoryDto.RoomDto rd : structure) {
-            for (IndoorHistoryDto.SensorPositionDto sp : rd.getSensors()) {
-                List<Measurement> list = measurementRepo
-                        .findBySensor_SensorIdAndTimestampBetweenOrderByTimestampAsc(
-                                sp.getSensorId(),
-                                Date.from(start),
-                                Date.from(end)
-                        );
-                measMap.put(sp.getSensorId(), list);
-            }
-        }
-
-        // 5) 슬라이스 매핑
-        List<IndoorHistoryDto.TimeSliceDto> slices = new ArrayList<>();
+        // 4) 슬라이스 매핑
+        List<TimeSliceDto> slices = new ArrayList<>();
         for (Instant timePoint : times) {
             Date tp = Date.from(timePoint);
-            List<IndoorHistoryDto.SensorHeatDto> heats = new ArrayList<>();
+            List<SensorHeatDto> heats = new ArrayList<>();
 
-            for (IndoorHistoryDto.RoomDto rd : structure) {
-                for (IndoorHistoryDto.SensorPositionDto sp : rd.getSensors()) {
+            for (RoomDto rd : structure) {
+                for (SensorPositionDto sp : rd.getSensors()) {
                     Measurement m = measurementRepo
                             .findTopBySensor_SensorIdAndTimestampLessThanEqualOrderByTimestampDesc(
                                     sp.getSensorId(), tp)

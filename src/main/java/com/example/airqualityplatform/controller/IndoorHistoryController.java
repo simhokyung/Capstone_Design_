@@ -1,6 +1,6 @@
 package com.example.airqualityplatform.controller;
 
-import com.example.airqualityplatform.dto.IndoorHistoryDto;
+import com.example.airqualityplatform.dto.response.IndoorHistoryDto;
 import com.example.airqualityplatform.service.IndoorHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
