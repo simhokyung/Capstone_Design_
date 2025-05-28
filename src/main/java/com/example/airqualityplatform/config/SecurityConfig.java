@@ -43,6 +43,8 @@ public class SecurityConfig {
                         // 회원가입, 로그인 등 Public API
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/measurements/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/measurements/**").permitAll()
+
                         .requestMatchers(HttpMethod.DELETE, "/sensors/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/sensors/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/sensors/**").permitAll()
