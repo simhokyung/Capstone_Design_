@@ -2,13 +2,13 @@ package com.example.airqualityplatform.service;
 
 import com.example.airqualityplatform.domain.Measurement;
 import com.example.airqualityplatform.domain.Room;
-import com.example.airqualityplatform.dto.response.IndoorHistoryDto;
-import com.example.airqualityplatform.dto.response.IndoorHistoryDto.RoomDto;
-import com.example.airqualityplatform.dto.response.IndoorHistoryDto.SensorHeatDto;
-import com.example.airqualityplatform.dto.response.IndoorHistoryDto.SensorPositionDto;
-import com.example.airqualityplatform.dto.response.IndoorHistoryDto.TimeSliceDto;
-import com.example.airqualityplatform.repository.RoomRepository;
+import com.example.airqualityplatform.dto.response.IndoorRoomHistoryDto;
+import com.example.airqualityplatform.dto.response.IndoorRoomHistoryDto.RoomDto;
+import com.example.airqualityplatform.dto.response.IndoorRoomHistoryDto.SensorHistoryDto;
+import com.example.airqualityplatform.dto.response.IndoorRoomHistoryDto.SensorPositionDto;
+import com.example.airqualityplatform.dto.response.IndoorRoomHistoryDto.TimeSliceDto;
 import com.example.airqualityplatform.repository.MeasurementRepository;
+import com.example.airqualityplatform.repository.RoomRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,37 +29,35 @@ public class IndoorHistoryService {
     private final ObjectMapper objectMapper;
 
     @Transactional(readOnly = true)
-    public IndoorHistoryDto getIndoorHistory(
+    public IndoorRoomHistoryDto getRoomHistory(
+            Long roomId,
             Instant start,
             Instant end,
             int intervalMinutes
     ) throws Exception {
-        // 1) Room + Sensor 로드
-        List<Room> rooms = roomRepo.findAll();
+        // 1) 방 + 센서 로드
+        Room room = roomRepo.findWithSensorsByRoomId(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room not found: " + roomId));
 
-        // 2) 구조 DTO 매핑
-        List<RoomDto> structure = new ArrayList<>();
-        for (Room room : rooms) {
-            List<List<Double>> poly = objectMapper.readValue(
-                    room.getPolygon(),
-                    new TypeReference<List<List<Double>>>() {}
-            );
-            List<SensorPositionDto> positions = room.getSensors().stream()
-                    .map(s -> IndoorHistoryDto.SensorPositionDto.builder()
-                            .sensorId(s.getSensorId())
-                            .x(s.getXCoordinate())
-                            .y(s.getYCoordinate())
-                            .build())
-                    .collect(Collectors.toList());
+        // 2) RoomDto 매핑
+        List<List<Double>> poly = objectMapper.readValue(
+                room.getPolygon(), new TypeReference<List<List<Double>>>() {}
+        );
+        List<SensorPositionDto> positions = room.getSensors().stream()
+                .map(s -> SensorPositionDto.builder()
+                        .sensorId(s.getSensorId())
+                        .x(s.getXCoordinate())
+                        .y(s.getYCoordinate())
+                        .build())
+                .collect(Collectors.toList());
 
-            structure.add(IndoorHistoryDto.RoomDto.builder()
-                    .roomId(room.getRoomId())
-                    .roomName(room.getRoomName())
-                    .floorNumber(room.getFloorNumber())
-                    .polygon(poly)
-                    .sensors(positions)
-                    .build());
-        }
+        RoomDto roomDto = RoomDto.builder()
+                .roomId(room.getRoomId())
+                .roomName(room.getRoomName())
+                .floorNumber(room.getFloorNumber())
+                .polygon(poly)
+                .sensors(positions)
+                .build();
 
         // 3) 시간축 생성
         List<Instant> times = new ArrayList<>();
@@ -67,35 +65,40 @@ public class IndoorHistoryService {
             times.add(t);
         }
 
-        // 4) 슬라이스 매핑
+        // 4) TimeSliceDto 매핑
         List<TimeSliceDto> slices = new ArrayList<>();
         for (Instant timePoint : times) {
             Date tp = Date.from(timePoint);
-            List<SensorHeatDto> heats = new ArrayList<>();
+            List<SensorHistoryDto> sensorData = new ArrayList<>();
 
-            for (RoomDto rd : structure) {
-                for (SensorPositionDto sp : rd.getSensors()) {
-                    Measurement m = measurementRepo
-                            .findTopBySensor_SensorIdAndTimestampLessThanEqualOrderByTimestampDesc(
-                                    sp.getSensorId(), tp)
-                            .orElse(null);
-                    Double value = (m != null) ? m.getPm25_t() : null;
-                    heats.add(IndoorHistoryDto.SensorHeatDto.builder()
-                            .sensorId(sp.getSensorId())
-                            .x(sp.getX())
-                            .y(sp.getY())
-                            .value(value)
-                            .build());
-                }
+            for (SensorPositionDto sp : positions) {
+                Measurement m = measurementRepo
+                        .findTopBySensor_SensorIdAndTimestampLessThanEqualOrderByTimestampDesc(
+                                sp.getSensorId(), tp)
+                        .orElse(null);
+                Double pm25 = m != null ? m.getPm25_t() : null;
+                Double pm10 = m != null ? m.getPm100_t() : null;
+                Double co2  = m != null ? m.getCo2()   : null;
+                Double voc  = m != null ? m.getVoc()   : null;
+
+                sensorData.add(SensorHistoryDto.builder()
+                        .sensorId(sp.getSensorId())
+                        .x(sp.getX())
+                        .y(sp.getY())
+                        .pm25(pm25)
+                        .pm10(pm10)
+                        .co2(co2)
+                        .voc(voc)
+                        .build());
             }
-            slices.add(IndoorHistoryDto.TimeSliceDto.builder()
+            slices.add(TimeSliceDto.builder()
                     .timestamp(timePoint)
-                    .sensors(heats)
+                    .sensors(sensorData)
                     .build());
         }
 
-        return IndoorHistoryDto.builder()
-                .structure(structure)
+        return IndoorRoomHistoryDto.builder()
+                .room(roomDto)
                 .slices(slices)
                 .build();
     }

@@ -5,8 +5,8 @@ import java.time.Instant;
 import java.util.List;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class IndoorHistoryDto {
-    private List<RoomDto> structure;
+public class IndoorRoomHistoryDto {
+    private RoomDto room;
     private List<TimeSliceDto> slices;
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -28,14 +28,17 @@ public class IndoorHistoryDto {
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class TimeSliceDto {
         private Instant timestamp;
-        private List<SensorHeatDto> sensors;
+        private List<SensorHistoryDto> sensors;
     }
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class SensorHeatDto {
+    public static class SensorHistoryDto {
         private Long sensorId;
         private Double x;
         private Double y;
-        private Double value;
+        private Double pm25;
+        private Double pm10;
+        private Double co2;
+        private Double voc;
     }
 }

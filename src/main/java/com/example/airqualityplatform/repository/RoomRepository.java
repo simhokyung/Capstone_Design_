@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
@@ -13,5 +14,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Override
     @EntityGraph(attributePaths = "sensors")
-    List<Room> findAll();
+    java.util.List<Room> findAll();
+
+    @EntityGraph(attributePaths = "sensors")
+    Optional<Room> findWithSensorsByRoomId(Long roomId);
 }
