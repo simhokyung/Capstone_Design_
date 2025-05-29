@@ -42,7 +42,7 @@ public class DeviceAutoControl {
 
     // 여러 기기(N) → 하나의 정책(1)
     // 하나의 정책이 여러 Device에 적용됨 (1:N 관계)
-    @OneToMany(mappedBy = "policy", orphanRemoval = true)
+    @OneToMany(mappedBy = "policy")
     private List<Device> devices;
 
     @PrePersist
