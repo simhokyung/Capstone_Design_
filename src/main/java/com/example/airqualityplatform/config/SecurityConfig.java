@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/sensors/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/sensors/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/sensors/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/sensors/**").permitAll()
 
                         .requestMatchers(HttpMethod.PUT, "/rooms/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/homes/**").permitAll()
