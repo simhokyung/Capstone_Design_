@@ -28,7 +28,7 @@ public class DeviceAutoControlService {
     public DeviceAutoControlResponseDto createAutoControl(DeviceAutoControlRequestDto dto) {
         // 1) 정책 저장
         DeviceAutoControl policy = DeviceAutoControlMapper.toEntity(dto, null);
-        DeviceAutoControl saved  = controlRepo.save(policy);
+        DeviceAutoControl saved = controlRepo.save(policy);
 
         // 2) 디바이스 연결
         List<Device> devices = deviceRepo.findByRoom_RoomId(dto.getRoomId());
@@ -78,10 +78,18 @@ public class DeviceAutoControlService {
 
     @Transactional
     public void deleteAutoControl(Long id) {
-        if (!controlRepo.existsById(id)) {
-            throw new ResourceNotFoundException(
-                    "자동제어 정책이 없습니다. id=" + id);
+        // 정책 존재 확인
+        DeviceAutoControl policy = controlRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("자동제어 정책이 없습니다. id=" + id));
+
+        // 1) 디바이스와 연결 해제
+        List<Device> devices = policy.getDevices();
+        if (devices != null && !devices.isEmpty()) {
+            devices.forEach(d -> d.setPolicy(null));
+            deviceRepo.saveAll(devices);
         }
-        controlRepo.deleteById(id);
+
+        // 2) 정책 삭제
+        controlRepo.delete(policy);
     }
 }
