@@ -75,6 +75,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/policies/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/policies/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/policies/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/policies/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/ai/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ai/**").permitAll()
