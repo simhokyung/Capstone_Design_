@@ -1,4 +1,3 @@
-// src/main/java/com/example/airqualityplatform/service/AiControlService.java
 package com.example.airqualityplatform.service;
 
 import com.example.airqualityplatform.domain.AiControlBatch;
@@ -24,56 +23,63 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AiControlService {
 
-    /* ───────── DI ───────── */
     private final AiControlBatchRepository batchRepo;
     private final TaskScheduler            scheduler;
     private final DeviceControlService     controlService;
     private final NotificationService      notificationService;
 
-    /* ───────── AI → 제어 배치 수신 ───────── */
+    /**
+     * AI에서 내려준 제어 배치 수신 및 스케줄링
+     */
     @Transactional
     public AiControlBatchResponseDto ingestControl(AiControlBatchRequestDto dto) {
+        // 1) AI 타임스탬프 파싱 및 도착 시점 보정
+        Instant originalTs = Instant.parse(dto.getTimestamp());
+        Instant now        = Instant.now();
+        // AI 타임스탬프가 과거라면 현재 시각으로 대체
+        Instant batchTs    = originalTs.isAfter(now) ? originalTs : now;
+        log.info("[ingestControl] originalTs={}, now={}, batchTs={}", originalTs, now, batchTs);
 
-        /* 1. 배치 엔티티 저장 */
-        Instant ts = Instant.parse(dto.getTimestamp());     // ISO-8601 문자열 그대로 파싱
+        // 2) 배치 엔티티 저장
         AiControlBatch batch = AiControlBatch.builder()
-                .timestamp(ts)
+                .timestamp(batchTs)
                 .deviceId(dto.getDeviceId())
                 .build();
-
         dto.getControlResult().forEach(segDto ->
-                batch.addSegment(
-                        AiControlSegment.builder()
-                                .startMinute(segDto.getStartMinute())
-                                .endMinute(segDto.getEndMinute())
-                                .airPurifier(segDto.getAirPurifier())
-                                .fanMode(segDto.getFanMode())
-                                .ventilation(segDto.getVentilation())
-                                .build())
+                batch.addSegment(AiControlSegment.builder()
+                        .startMinute(segDto.getStartMinute())
+                        .endMinute(segDto.getEndMinute())
+                        .airPurifier(segDto.getAirPurifier())
+                        .fanMode(segDto.getFanMode())
+                        .ventilation(segDto.getVentilation())
+                        .build())
         );
         AiControlBatch saved = batchRepo.save(batch);
 
-        /* 2. 세그먼트 각각을 예약 작업으로 등록 */
+        // 3) 세그먼트 별 스케줄 등록 (도착 시점을 기준으로 보정)
         saved.getSegments().forEach(seg -> {
-            Instant exec = saved.getTimestamp().plus(seg.getStartMinute(), ChronoUnit.MINUTES);
-            scheduler.schedule(() -> applySegment(saved.getDeviceId(), seg),
-                    Date.from(exec));
+            Instant desired = batchTs.plus(seg.getStartMinute(), ChronoUnit.MINUTES);
+            Instant exec    = desired.isAfter(now) ? desired : now;
+            log.info("[ingestControl] Schedule segment startMinute={} (desired={}, exec={})",
+                    seg.getStartMinute(), desired, exec);
+            scheduler.schedule(() -> applySegment(saved.getDeviceId(), seg), Date.from(exec));
         });
 
-        /* 3. DTO 로 변환해 반환 */
+        // 4) 응답 DTO 변환 및 반환
         return AiControlBatchResponseDto.fromEntity(saved);
     }
 
-    /* ───────── 실제 세그먼트 적용 ───────── */
+    /**
+     * 세그먼트 실제 적용: SmartThings 호출 및 알림
+     */
     private void applySegment(String deviceId, AiControlSegment seg) {
-
-        /* SmartThings 호출용 DTO 구성 */
+        // SmartThings 제어 명령 구성
         List<DeviceControlRequestDto.Command> cmds = new ArrayList<>();
 
         DeviceControlRequestDto.Command powerCmd = new DeviceControlRequestDto.Command();
         powerCmd.setComponent("main");
         powerCmd.setCapability("switch");
-        powerCmd.setCommand(seg.getAirPurifier());          // "on" | "off"
+        powerCmd.setCommand(seg.getAirPurifier());
         powerCmd.setArguments(List.of());
         cmds.add(powerCmd);
 
@@ -81,22 +87,24 @@ public class AiControlService {
         fanCmd.setComponent("main");
         fanCmd.setCapability("airConditionerFanMode");
         fanCmd.setCommand("setFanMode");
-        fanCmd.setArguments(List.of(seg.getFanMode()));     // ["sleep"] 등
+        fanCmd.setArguments(List.of(seg.getFanMode()));
         cmds.add(fanCmd);
 
         DeviceControlRequestDto payload = new DeviceControlRequestDto();
         payload.setCommands(cmds);
 
-        /* SmartThings 로 전송 */
+        // SmartThings에 명령 전송
         controlService.sendCommandsRaw(deviceId, payload);
 
-        /* 환기 알림 */
+        // 환기 알림
         if (Boolean.TRUE.equals(seg.getVentilation())) {
             notificationService.notifyVentilation(deviceId, seg.getStartMinute());
         }
     }
 
-    /* ───────── 최신 배치 조회 ───────── */
+    /**
+     * 최신 배치 조회
+     */
     @Transactional(readOnly = true)
     public AiControlBatchResponseDto getLatestBatch() {
         AiControlBatch b = batchRepo.findFirstByOrderByTimestampDesc()
