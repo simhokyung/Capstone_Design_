@@ -75,7 +75,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/ai/**").permitAll()
 
 
-
                         // AI 예측 API
                         .requestMatchers(HttpMethod.GET, "/ai/predictions").permitAll()
 
