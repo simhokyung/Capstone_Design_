@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from itertools import product
 import requests, time, random
 
-# ✅ 기본값 (예외 시 사용)
+# ✅ 기본값 (예외:사용자 기준치가 없을 시 사용)
 DEFAULT_THRESHOLDS = {
     "pm25_t": 5,
     "pm100_t": 15,
@@ -23,7 +23,6 @@ FAN_COST = {
     'windfree': 14,
     'off' :0
 }
-# fan_effect(공기질 개선 효과)와 fan_cost(에너지 비용)를 동일한 중요도로 반영하고 싶다면, 두 항이 점수 계산에 미치는 기여도가 비슷해야
 # 가중치 조정 (스케일 조정): 공기질 오차와 에너지 비용이 비슷한 범위의 값을 가지도록 
 
 # ✅ 강화된 FAN_EFFECT (공기질 변화 더 크게 반영)
@@ -42,7 +41,7 @@ USER_STANDARD_DIR = "/home/ubuntu/userstandard"
 POST_URL = "http://18.191.176.79:8080/ai/control"
 
 
-# ✅ 기준값 불러오기
+# ✅ 사용자 기준값 불러오기
 def get_user_thresholds(device_id, path=USER_STANDARD_DIR):
     try:
         files = sorted(glob.glob(os.path.join(path, "*.json")), reverse=True)
@@ -192,7 +191,7 @@ def watch_userstandard(path=USER_STANDARD_DIR):
     print(f" 기준값 디렉토리 감시 : {path}")
     observer.join()
 
-# ✅ 실행부
+# ✅ 실행부 : 사용자 정책이 바뀔때마다 최적제어 새로 생성 
 if __name__ == "__main__":
     # 각각의 기능을 별도 스레드에서 실행
     t1 = threading.Thread(target=run_every_hour)
