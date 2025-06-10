@@ -17,3 +17,7 @@ application.yml
 # === 빌드 산출물 ===
 *.jar
 *.war
+
+
+# Gradle 캐시
+.gradle/
