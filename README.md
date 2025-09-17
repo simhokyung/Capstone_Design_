@@ -43,6 +43,27 @@
 * **시각화 정보 제공(그래프, 히트맵)**: 다수의 IoT센서를 활용해 센서간 간격을 좁혀 해상도 높은 데이터를 사용, 사용자에게 실내 공기질 상태를 히트맵 형식으로 제공해 오염원을 파악할 수 있게 한다.  
 
 
+---
+
+## 3) 앱 설명
+
+
+**홈화면**
+<img width="213" height="522" alt="image" src="https://github.com/user-attachments/assets/29dd8504-17ba-4208-b57d-d0b171c3bb4c" />
+
+
+홈 화면에서는 실내외 공기질 상태 및 공기질 예측 정보를 요약해서 볼 수 있다.
+
+
+**실외화면**
+<img width="229" height="551" alt="image" src="https://github.com/user-attachments/assets/bf084fe2-ed51-4104-94df-4a8ff4ae6390" />  <img width="225" height="550" alt="image" src="https://github.com/user-attachments/assets/242a24c6-2989-4dc5-9202-95904710d940" />
+
+
+
+
+실외 화면에서는 실외 공기질 상태 및 24시간 예측 그래프를 확인할 수 있으며, 각 항목에 대한 설명 및 단계별 기준치를 확인할 수 있다.
+
+
 
 ---
 
