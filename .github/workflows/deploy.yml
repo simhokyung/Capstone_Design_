@@ -2,8 +2,13 @@ name: Deploy to EC2 via SSM
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+    # 문서만 수정하면 아예 워크플로우가 돌지 않도록
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+  # 필요 시 수동 실행도 가능
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -11,6 +16,8 @@ permissions:
 
 jobs:
   deploy:
+    # 커밋 메시지에 [skip deploy] 넣으면 배포 잡 자체를 스킵
+    if: "!contains(github.event.head_commit.message, '[skip deploy]')"
     runs-on: ubuntu-latest
 
     steps:
@@ -36,13 +43,23 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::916662722416:role/GitHubActionsEC2DeployRole
           role-session-name: GitHubActionsSession
-          aws-region: us-east-2
+          aws-region: us-east-2   # EC2/SSM/S3가 있는 리전과 동일해야 함
 
       - name: Upload JAR to S3
         run: |
           aws s3 cp backend/build/libs/air-quality-platform-0.0.1-SNAPSHOT.jar s3://capstonedesign-deploy-bucket/
 
+      # EC2가 running일 때만 SSM 실행 (꺼져 있으면 자동 스킵)
+      - name: Get instance state
+        id: state
+        run: |
+          STATE=$(aws ec2 describe-instances --instance-ids i-0fa3ade3acda4f621 \
+                  --query 'Reservations[0].Instances[0].State.Name' --output text)
+          echo "state=$STATE"
+          echo "state=$STATE" >> $GITHUB_OUTPUT
+
       - name: Run deploy.sh via SSM
+        if: steps.state.outputs.state == 'running'
         run: |
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
