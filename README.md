@@ -1,4 +1,4 @@
-# 가정용 공기질 관리 플랫폼 
+# 🏠💨가정용 공기질 관리 플랫폼 
 
 **AI 예측**과 **최적제어** 알고리즘을 적용해 
 
@@ -8,7 +8,7 @@
 ---
 
 ## 개발 배경
-<img width="1295" height="578" alt="image" src="https://github.com/user-attachments/assets/3c6a64e9-15c5-4e95-beb0-c8b9d8c02046" />
+<img width="907" height="400" alt="image" src="https://github.com/user-attachments/assets/739a4e7d-c974-4601-a3e8-bc5a99267195" />
 
 
 국립 환경 과학원에 따르면 한국인은 
@@ -18,16 +18,16 @@
 
 
 
-<img width="1143" height="685" alt="image" src="https://github.com/user-attachments/assets/21ffcea7-0385-4853-9c10-6091aa93128b" />
+<img width="923" height="328" alt="image" src="https://github.com/user-attachments/assets/704b5277-fe31-4e88-9c33-fe0020954487" />
 
 
 정부는 실내 공기질 관리법으로 다중 이용 시설에서 **실내 공기질 관리를 의무화** 하였고,
 
 
-**2024년 그 기준을 강화**했습니다.
+2024년 그 **기준**을 **강화**했습니다.
 
 
-이에따라 **실내 공기질 관리에 다방면으로 도움을 줄 수 있는**
+이에따라 **실내 공기질 관리**에 다방면으로 **도움**을 줄 수 있는
 
 
 **가정용 공기질 관리 플랫폼**을 개발하게 되었습니다.
