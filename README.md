@@ -1,4 +1,4 @@
-# 🏠가정용 공기질 관리 플랫폼 
+<img width="795" height="181" alt="image" src="https://github.com/user-attachments/assets/b2e01fac-6f0a-4bd5-a4a1-1b17be669b84" /># 🏠가정용 공기질 관리 플랫폼 
 
 **AI 예측**과 **최적제어** 알고리즘을 적용해 
 
@@ -52,9 +52,9 @@
 
 * 팀장으로, 백엔드 역할을 맡았다.
 * 아키텍처 설계, 도메인 모델링, ERD 테이블, API 명세서 등을 작성하였다.
-* **IoT 센서 설치 및 데이터 수집 파이프라인**을 구성했다.
+* 1분마다 수신되는 센서&공기청정기 데이터 -> DB저장 -> 병합하여 AI 서버에 전송하는 흐름 완성.
 * SmartThings/대기질 API 연동, 필터 수명 로직, 사용자 맞춤 제어 정책을 구현했다.
-
+* 스프링 서버를 AWS EC2에 배포.
 
 ---
 
@@ -71,17 +71,14 @@
 
 ## 5) 시스템 구조 (Architecture)
 
-```
-[IoT Sensors]──(1분)──>[Backend API]──> [MySQL]
-                       │              └── [Schedulers: 상태/필터/알림]
-                       ├── SmartThings 제어/상태 동기화
-                       └── 대기질/날씨 API(외부)
-```
+<img width="1333" height="620" alt="image" src="https://github.com/user-attachments/assets/4b855d61-8f65-437a-9538-9164070a3ef7" />
 
-* **도메인**: User, Home/Room, Device, Sensor, Measurement, Filter/FilterStatus, Notification, Schedule, DeviceAutoControl, (AI 예측/제어 배치 등)
-* **흐름**: 요청→Controller→Service→Repository(JPA)→DB, 인증 필터(JWT)
 
 ---
+
+## 6) ERD
+<img width="3316" height="5842" alt="diagram" src="https://github.com/user-attachments/assets/dc102fe8-46a0-47b0-ac81-8d37d68f1196" />
+
 
 ---
 
@@ -89,7 +86,6 @@
 
 ### (1) 환경 변수
 
-> 반드시 **환경 변수**로 관리하고, 레포에 시크릿을 커밋하지 않는다.
 
 | KEY                  | 예시                                                                     | 설명             |
 | -------------------- | ------------------------------------------------------------------------ | ---------------- |
@@ -145,24 +141,18 @@ java -jar build/libs/*-SNAPSHOT.jar
 
 ---
 
-## 9) 핵심 설계 포인트 (Why)
-
-* **예측 + 제어**로 단순 알림을 넘어 **사용자 체감 가치**를 만든다.
-* **사용자 맞춤 기준치**: 알러지/천식 등 사용자의 컨디션을 반영한다.
-* **필터 수명 평가**: 디바이스 사용량·입자량 기반으로 **교체 시점**을 가시화한다.
-* **스케줄러**: 디바이스 상태/필터 상태를 주기적으로 동기화해 **자동 운영**을 지향한다.
-* **JWT 보안**: 토큰 기반 인증으로 모바일/웹/IoT 게이트웨이 확장성을 고려한다.
-
----
-
 ## 10) 성과 (Numbers)
 
-> 실제 수치가 있다면 반드시 적는다. (예: 공기질 회복 시간 단축 %, 에너지 절감 %, 사용자 알림 클릭률 등)
+<img width="795" height="181" alt="image" src="https://github.com/user-attachments/assets/99d4a92f-2301-4ea3-9719-0ec434b86a5d" />
+LSTM 기반 공기질 예측 모델의 성능을 평가한 결과, 
 
-* 예: 공기질 악화 예측 정확도 **xx%**, 선제 제어로 평균 회복 시간 **yy분 → zz분(-aa%)**
+예측값이 전체적으로 실제 측정값과 높은 유사도를 보이며 안정적인 성능을 나타냈다. 
 
 ---
 
+## 12) 트러블슈팅
+
+---
 
 ## 13) 실행 스크린샷 (선택)
 
@@ -170,9 +160,5 @@ java -jar build/libs/*-SNAPSHOT.jar
 
 ---
 
-## 14) 라이선스
 
-MIT (또는 학교 과제/개인 포트폴리오 용도임을 명시)
-
----
 
