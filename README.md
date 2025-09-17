@@ -1,4 +1,4 @@
-<img width="795" height="181" alt="image" src="https://github.com/user-attachments/assets/b2e01fac-6f0a-4bd5-a4a1-1b17be669b84" /># 🏠가정용 공기질 관리 플랫폼 
+# 🏠가정용 공기질 관리 플랫폼 
 
 **AI 예측**과 **최적제어** 알고리즘을 적용해 
 
