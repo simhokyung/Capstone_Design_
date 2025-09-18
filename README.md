@@ -12,13 +12,13 @@
 2. [주요 기능 (Features)](#2-주요-기능-features)
 3. [앱 기능 설명](#3-앱-설명)
 4. [나의 역할 (What I built)](#4-나의-역할-what-i-built)
-5. [기술 스택(백엔드)](#5-기술-스택백엔드-tech-stack)
+5. [기술 스택(Backend)](#5-기술-스택백엔드-tech-stack)
 6. [폴더 구조](#6-폴더구조)
 7. [시스템 구조 (Architecture)](#7-시스템-구조-architecture)
 8. [ERD 테이블](#8-erd)
 9. [API 문서](#9--api-문서)
-10. [실행 방법](#10-빠른-실행-local-quickstart)
-11. [예측 성능](#11-성과-numbers)
+10.  [실행 방법](#10-빠른-실행-local-quickstart)
+11. [공기질 예측 성능](#11-성과-numbers)
 12. [트러블 슈팅](#12-트러블슈팅)
 
 ---
@@ -485,7 +485,7 @@ java -jar build/libs/*-SNAPSHOT.jar
 * 서버 기본 포트: `8080`
 ---
 
-## 11) 성과 (Numbers)
+## 11) 공기질 예측 성능
 
 <img width="795" height="181" alt="image" src="https://github.com/user-attachments/assets/99d4a92f-2301-4ea3-9719-0ec434b86a5d" />
 
