@@ -339,8 +339,11 @@ external.weather.weatherbit.key=${WEATHERBIT_API_KEY}
 
 ```bash
 # Docker 예시 (비밀번호는 반드시 안전한 값으로 변경)
-docker run -d --name air-mysql -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=air \
+docker run -d --name air-mysql \
+  -e MYSQL_ROOT_PASSWORD=pass \
+  -e MYSQL_DATABASE=air \
   -p 3306:3306 mysql:8
+
 ```
 
 ### (3) 빌드 & 실행
