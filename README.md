@@ -36,18 +36,18 @@
 
 ## 2) 주요 기능 (Features)
 
-* **AI기반 공기질 예측**: 운영 환경에서의 **데이터를 수집**하여 **학습**하고, 현재 상태를 바탕으로 1시간 내의 실내 공기질 상태를 **1분 단위**로 **예측**
-* **예측값 기반 사전 대응**: 예측값을 바탕으로 공기청정기의 **최적 제어** 스케줄을 10분 단위로 제공
-* **필터 수명 계산**: 필터 수명은 단순 시간 누적이 아니라, 공기청정기의 **팬 속도**와 **공기질 지수**(AQI)를 가중치로 반영해 **실제 사용 환경을 고려**해 계산
-* **맞춤형 공기질 관리 제공**: 사용자에게 천식, 알러지 여부를 입력받아 **공기질 관리 기준치를 설정**하여 사용자 **맞춤형** 공기질 관리 서비스를 제공
-* **시각화 정보 제공(그래프, 히트맵)**: 다수의 IoT센서를 활용해 센서간 간격을 좁혀 **해상도 높은 데이터**를 사용, 사용자에게 실내 공기질 상태를 **히트맵 형식**으로 제공해 **오염원을 한눈**에 파악
+* **AI기반 공기질 예측**: 운영 환경에서의 데이터를 수집하여 학습하고, 현재 상태를 바탕으로 1시간 내의 실내 공기질 상태를 1분 단위로 예측
+* **예측값 기반 사전 대응**: 예측값을 바탕으로 공기청정기의 최적 제어 스케줄을 10분 단위로 제공
+* **필터 수명 계산**: 필터 수명은 단순 시간 누적이 아니라, 공기청정기의 팬 속도와 공기질 지수(AQI)를 가중치로 반영해 실제 사용 환경을 고려해 계산
+* **맞춤형 공기질 관리 제공**: 사용자에게 천식, 알러지 여부를 입력받아 공기질 관리 기준치를 설정하여 사용자 맞춤형 공기질 관리 서비스를 제공
+* **시각화 정보 제공(그래프, 히트맵)**: 다수의 IoT센서를 활용해 센서간 간격을 좁혀 해상도 높은 데이터를 사용, 사용자에게 실내 공기질 상태를 히트맵 형식으로 제공해 오염원을 한눈에 파악
 
 ---
 
 ## 3) 앱 설명
 
 
-
+**홈 화면**
 
 <img width="213" height="522" alt="image" src="https://github.com/user-attachments/assets/29dd8504-17ba-4208-b57d-d0b171c3bb4c" />
 
@@ -63,7 +63,7 @@
 
 
 
-
+**실외 화면**
 
 <img width="229" height="551" alt="image" src="https://github.com/user-attachments/assets/bf084fe2-ed51-4104-94df-4a8ff4ae6390" /> <img width="225" height="550" alt="image" src="https://github.com/user-attachments/assets/242a24c6-2989-4dc5-9202-95904710d940" />
 
@@ -83,7 +83,7 @@
 
 
 
-
+**실내 화면**
 
 <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/90c85e16-41a6-4d0c-a35c-a6749140e624" /> <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/0fecb07e-70cf-4676-8c4f-7aa99e85f6d9" /> <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/4c8c996a-a8f8-4b10-9956-7d702c18a1c2" />
 
@@ -101,7 +101,7 @@
 
 
 
-
+**사용자 스케줄 & 관리기준치 설정**
 
 <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/a3f832fe-86a8-49f8-903b-1d313ed5f0f8" /> <img width="241" height="572" alt="image" src="https://github.com/user-attachments/assets/c715fe92-ea56-4120-976a-5301305c49d2" />
 
@@ -124,7 +124,7 @@
 
 
 
-
+**자동제어**
 
 <img width="241" height="574" alt="image" src="https://github.com/user-attachments/assets/d52d63a7-957a-4a03-a0a3-4b4c8152730f" /> <img width="241" height="567" alt="image" src="https://github.com/user-attachments/assets/ec393fb8-44e0-42f0-a431-ec0266575d08" />
 
