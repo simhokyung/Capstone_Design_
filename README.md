@@ -269,35 +269,40 @@ AI는 이 정보를 받아 방 별로 **최적제어**를 내려 공기청정기
 
 ---
 
-## 6) 시스템 구조 (Architecture)
-
-<img width="1333" height="620" alt="image" src="https://github.com/user-attachments/assets/4b855d61-8f65-437a-9538-9164070a3ef7" />
-
----
-
-## 7) 폴더구조
+## 6) 폴더구조
 
 backend/
 ├─ src/main/java/com/example/airqualityplatform
-│  ├─ controller/ # REST 컨트롤러 (Auth, Device, Sensor, Measurement, ...)
-│  ├─ service/    # 비즈니스 로직 (SmartThings, 필터수명, 스케줄러 포함)
-│  ├─ domain/     # JPA 엔티티
-│  ├─ repository/ # Spring Data JPA 리포지토리
-│  ├─ dto/        # 요청/응답 DTO
-│  ├─ security/   # JWT 필터/토큰/설정
+│  ├─ controller/  # REST 컨트롤러 (Auth, Device, Sensor, Measurement, ...)
+│  ├─ service/     # 비즈니스 로직 (SmartThings, 필터수명, 스케줄러 포함)
+│  ├─ domain/      # JPA 엔티티
+│  ├─ repository/  # Spring Data JPA 리포지토리
+│  ├─ dto/         # 요청/응답 DTO
+│  ├─ security/    # JWT 필터/토큰/설정
 │  └─ AirQualityPlatformApplication.java
 └─ src/main/resources/
    └─ application.properties (또는 application.yml)
 
 ---
 
-## 8) ERD
-<img width="3316" height="5842" alt="diagram" src="https://github.com/user-attachments/assets/dc102fe8-46a0-47b0-ac81-8d37d68f1196" />
+## 7) 시스템 구조 (Architecture)
 
+<img width="1333" height="620" alt="image" src="https://github.com/user-attachments/assets/4b855d61-8f65-437a-9538-9164070a3ef7" />
 
 ---
 
-## 9) 빠른 실행 (Local Quickstart)
+## 8) ERD
+<img width="3316" height="5842" alt="diagram" src="https://github.com/user-attachments/assets/dc102fe8-46a0-47b0-ac81-8d37d68f1196" />
+
+---
+
+## 9 ) API 문서 
+
+**API 명세서 주소**: <https://solar-skate-88b.notion.site/API-1f31bcaecabd80ebb3aae45ffce4eaa4#2031bcaecabd80b1b0d8f06554be7522>
+
+---
+
+## 10) 빠른 실행 (Local Quickstart)
 
 ### (1) 환경 변수
 
@@ -346,12 +351,6 @@ java -jar build/libs/*-SNAPSHOT.jar
 ```
 
 * 서버 기본 포트: `8080`
----
-
-## 10) API 문서 
-
-**API 명세서 주소**: <https://solar-skate-88b.notion.site/API-1f31bcaecabd80ebb3aae45ffce4eaa4#2031bcaecabd80b1b0d8f06554be7522>
-
 ---
 
 ## 11) 성과 (Numbers)
