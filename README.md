@@ -279,16 +279,15 @@ AI는 이 정보를 받아 방 별로 **최적제어**를 내려 공기청정기
 
 backend/
 ├─ src/main/java/com/example/airqualityplatform
-│ ├─ controller/ # REST 컨트롤러 (Auth, Device, Sensor, Measurement, ...)
-│ ├─ service/ # 비즈니스 로직 (SmartThings, 필터수명, 스케줄러 포함)
-│ ├─ domain/ # JPA 엔티티
-│ ├─ repository/ # Spring Data JPA 리포지토리
-│ ├─ dto/ # 요청/응답 DTO
-│ ├─ security/ # JWT 필터/토큰/설정
-│ └─ AirQualityPlatformApplication.java
+│  ├─ controller/ # REST 컨트롤러 (Auth, Device, Sensor, Measurement, ...)
+│  ├─ service/    # 비즈니스 로직 (SmartThings, 필터수명, 스케줄러 포함)
+│  ├─ domain/     # JPA 엔티티
+│  ├─ repository/ # Spring Data JPA 리포지토리
+│  ├─ dto/        # 요청/응답 DTO
+│  ├─ security/   # JWT 필터/토큰/설정
+│  └─ AirQualityPlatformApplication.java
 └─ src/main/resources/
-├─ application.properties (또는 application.yml)
-└─ schema.sql / data.sql
+   └─ application.properties (또는 application.yml)
 
 ---
 
