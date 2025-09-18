@@ -57,6 +57,8 @@
 홈 화면에서는 실내외 공기질 상태 및 공기질 예측 정보를 요약해서 볼 수 있다.
 
 
+
+
 **실외화면**
 
 
@@ -64,8 +66,62 @@
 
 
 
-
 실외 화면에서는 실외 공기질 상태 및 24시간 예측 그래프를 확인할 수 있으며, 각 항목에 대한 설명 및 단계별 기준치를 확인할 수 있다.
+
+
+
+**실내화면**
+
+<img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/90c85e16-41a6-4d0c-a35c-a6749140e624" /> <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/0fecb07e-70cf-4676-8c4f-7aa99e85f6d9" /> <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/4c8c996a-a8f8-4b10-9956-7d702c18a1c2" />
+
+실내 화면에서는 실내 공기질 상태 및 1시간 예측 그래프를 확인할 수 있으며, 방별 예측 그래프도 확인할 수 있다. 
+
+
+또한 최근 24시간 내 실내 공기질 상태를 히트맵 형태로 볼 수 있어 오염원을 한눈에 파악할 수 있다.
+
+
+<img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/a3f832fe-86a8-49f8-903b-1d313ed5f0f8" /> <img width="1032" height="2443" alt="image" src="https://github.com/user-attachments/assets/f909c505-53e7-4b93-94b6-2ffdc20d52e2" />
+
+
+
+스케줄 수정 화면에서는 사용자의 외출 시간을 입력해 불필요한 에너지 소비를 줄일 수 있다.
+
+
+관리 기준치 수정 화면에서는 사용자에게 맞춤형 공기질 관리 서비스를 제공하기 위해 관리 임계치를 입력받는다. 
+
+
+이때 알러지, 천식 여부에 따라 관리 임계치를 추천해주며, 필요시 세부 설정을 할 수 있다.
+
+
+
+
+**자동제어**
+
+
+<img width="1031" height="2452" alt="image" src="https://github.com/user-attachments/assets/70c6b21c-6ca0-4bf2-9294-8cf72d69f116" /> <img width="1037" height="2458" alt="image" src="https://github.com/user-attachments/assets/e3f7fec2-3c8a-472c-80e7-c0f4f2835eaa" /> <img width="1039" height="2441" alt="image" src="https://github.com/user-attachments/assets/4d814efa-dd14-4af0-9b36-78ca7ce4290d" />
+
+
+
+(1)사용자가 자동제어를 적용할 공간을 고른다. 
+
+
+(2)그 공간에서 적용할 공기질 기준치를 선택한다.
+
+
+(3)이 기준치의 초기값은 사용자가 위에서 셋팅한 사용자 공기질 기준치 값이다.
+
+
+이 기준치를 그대로 사용해도 되고, 공간에 따라 수정해서 사용해도 된다. ex) 방은 기준치를 엄격하게, 주방은 널널하게
+
+
+
+  
+
+
+
+
+
+
 
 
 
