@@ -63,6 +63,26 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### **실외 화면**
 
 <img width="229" height="551" alt="image" src="https://github.com/user-attachments/assets/bf084fe2-ed51-4104-94df-4a8ff4ae6390" /> <img width="225" height="550" alt="image" src="https://github.com/user-attachments/assets/242a24c6-2989-4dc5-9202-95904710d940" />
@@ -72,6 +92,25 @@
 (1)**실외 화면**에서는 **실외 공기질 상태** 및 **24시간 예측 그래프**를 확인할 수 있으며, 
 
 (2)각 항목에 대한 설명 및 단계별 기준치를 확인할 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -101,6 +140,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### **사용자 스케줄 & 관리기준치 설정**
 
 <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/a3f832fe-86a8-49f8-903b-1d313ed5f0f8" /> <img width="241" height="572" alt="image" src="https://github.com/user-attachments/assets/c715fe92-ea56-4120-976a-5301305c49d2" />
@@ -113,6 +177,30 @@
 (2)**관리 기준치 수정 화면**에서는 사용자에게 **맞춤형 공기질 관리 서비스**를 제공하기 위해 관리 임계치를 입력받는다. 
 
 이때 알러지, 천식 여부에 따라 **관리 임계치를 추천**해주며, 필요시 세부 설정을 할 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
