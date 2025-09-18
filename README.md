@@ -7,6 +7,21 @@
 
 ---
 
+## 📑 목차
+- [개발 배경](#1-개발-배경)
+- [주요 기능 (Features)](#2-주요-기능-features)
+- [앱 설명](#3-앱-설명)
+- [나의 역할 (What I built)](#4-나의-역할-what-i-built)
+- [기술 스택(백엔드)](#5-기술-스택백엔드-tech-stack)
+- [폴더 구조](#6-폴더구조)
+- [시스템 구조 (Architecture)](#7-시스템-구조-architecture)
+- [ERD](#8-erd)
+- [API 문서](#9--api-문서)
+- [빠른 실행 (Local Quickstart)](#10-빠른-실행-local-quickstart)
+- [성과 (Numbers)](#11-성과-numbers)
+- [트러블슈팅](#12-트러블슈팅)
+
+---
 ## 1) 개발 배경
 <img width="907" height="400" alt="image" src="https://github.com/user-attachments/assets/739a4e7d-c974-4601-a3e8-bc5a99267195" />
 
@@ -485,6 +500,8 @@ LSTM 기반 공기질 예측 모델의 성능을 평가한 결과,
 - [트러블슈팅](./docs/TROUBLESHOOTING.md)
 
 ---
+
+[🔝 위로 가기](#-가정용-공기질-관리-플랫폼-every-air)
 
 ---
 
