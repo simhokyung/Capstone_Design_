@@ -245,6 +245,116 @@ AI는 이 정보를 받아 방 별로 **최적제어**를 내려 공기청정기
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### **수동제어**
+
+
+<img width="228" height="558" alt="image" src="https://github.com/user-attachments/assets/ed8d0d0a-be38-4480-9cd1-9ade166850b8" />
+
+
+
+
+수동 제어 상태에서는 관리 장치를 **직접 제어**할 수 있으며, 공기청정기의 경우 **필터 소모율**을 확인할 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### **알림화면**
+
+
+<img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/7eb509e9-6a51-45a1-929a-045755041879" />
+
+
+
+
+
+알림 화면에서는 **필터 교체 필요 알림**, **공기질 이상 경고** 등을 확인할 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### **계정화면**
+
+
+<img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/6042e5bd-8948-4890-ae38-2568ed163eff" />
+
+
+
+
+계정 화면에서는 간단한 **사용자 정보**를 확인할 수 있으며, 알림 설정, 로그아웃, 비밀번호 변경 등 계정 설정을 할 수 있다.
+
 ---
 
 ## 4) 나의 역할 (What I built)
