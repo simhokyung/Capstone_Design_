@@ -482,7 +482,7 @@ LSTM 기반 공기질 예측 모델의 성능을 평가한 결과,
 
 ## 12) 트러블슈팅
 
-### 센서와 서버 간 데이터 통신 구현 문제
+### 1) 🔧센서와 서버 간 데이터 통신 구현 문제
 센서에서 측정값을 전송하는 서버가 TelosAir(센서 제조사) 서버로 고정되어 있어 플랫폼에서 센서의 측정값을 받으려면 TelosAir 웹 사이트에서 값을 읽어내야 함. 
 
 이는 데이터 접근성이 떨어지고, 시스템 활용에 제약이 생긴다.
@@ -521,6 +521,89 @@ LSTM 기반 공기질 예측 모델의 성능을 평가한 결과,
 
 
 
+
+### 2) 🔧 Room↔Home 양방향 매핑으로 인한 JSON 순환참조 폭증
+
+**증상**
+
+GET /homes, GET /homes/{id} 등에서 JSON이 수천 줄로 비정상적으로 커지고 직렬화가 지연된다.
+
+원인: Home.rooms → Room.home → Home.rooms … 순환 참조로 Jackson 직렬화가 깊게 이어짐.
+
+**원인**
+
+컨트롤러에서 엔티티를 직접 반환함.
+
+JPA 양방향 연관관계가 Jackson과 결합되어 무한 중첩 구조가 생김.
+
+**해결**
+
+엔티티 대신 DTO 반환으로 변경하고, 깊이 1로 제한한다.
+
+매핑은 Service에서 수행하며 HomeMapper, RoomMapper를 사용한다.
+
+Room API는 계층형 경로(/homes/{homeId}/rooms)로 설계해 조회 범위를 명확히 한다.
+
+핵심 코드(요약)
+
+// HomeService
+@Transactional(readOnly = true)
+public List<HomeResponseDto> getAllHomes() {
+    return homeRepository.findAll().stream()
+        .map(HomeMapper::toResponseDto) // ★ 엔티티→DTO
+        .toList();
+}
+
+@Transactional(readOnly = true)
+public HomeResponseDto getHomeById(Long homeId) {
+    Home home = homeRepository.findById(homeId)
+        .orElseThrow(() -> new ResourceNotFoundException("집을 찾을 수 없습니다. id: " + homeId));
+    return HomeMapper.toResponseDto(home); // ★ 엔티티→DTO
+}
+
+// RoomService
+@Transactional
+public RoomResponseDto createRoom(Long homeId, RoomRequestDto dto) {
+    Home home = homeRepository.findById(homeId)
+        .orElseThrow(() -> new ResourceNotFoundException("홈을 찾을 수 없습니다. id: " + homeId));
+    Room room = RoomMapper.toEntity(dto, null);
+    room.setHome(home);
+    return RoomMapper.toResponseDto(roomRepository.save(room)); // ★ DTO 반환
+}
+
+@Transactional(readOnly = true)
+public List<RoomResponseDto> getAllRoomsByHomeId(Long homeId) {
+    if (!homeRepository.existsById(homeId)) throw new ResourceNotFoundException("홈을 찾을 수 없습니다. id: " + homeId);
+    return roomRepository.findByHome_HomeId(homeId).stream()
+        .map(RoomMapper::toResponseDto) // ★ 엔티티→DTO
+        .toList();
+}
+
+// Controller는 DTO만 반환
+@RestController @RequestMapping("/homes")
+public class HomeController {
+  @GetMapping("/{homeId}") public ResponseEntity<HomeResponseDto> getHomeById(@PathVariable Long homeId){
+    return ResponseEntity.ok(homeService.getHomeById(homeId));
+  }
+}
+
+@RestController @RequestMapping("/homes/{homeId}/rooms")
+public class RoomController {
+  @GetMapping public ResponseEntity<List<RoomResponseDto>> getAllRooms(@PathVariable Long homeId){
+    return ResponseEntity.ok(roomService.getAllRoomsByHomeId(homeId));
+  }
+}
+
+
+**효과**
+
+JSON 응답이 필요 필드만 포함하며 크기가 정상화된다.
+
+직렬화 순환 제거로 응답 지연, 메모리 사용 감소 및 캡슐화 강화.
+
+**재발 방지**
+
+컨트롤러에서 엔티티 직접 반환 금지 원칙을 유지한다.
 
 ---
 
