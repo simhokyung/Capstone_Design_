@@ -482,7 +482,45 @@ LSTM 기반 공기질 예측 모델의 성능을 평가한 결과,
 
 ## 12) 트러블슈팅
 
-작성중..
+### 센서와 서버 간 데이터 통신 구현 문제
+센서에서 측정값을 전송하는 서버가 TelosAir(센서 제조사) 서버로 고정되어 있어 플랫폼에서 센서의 측정값을 받으려면 TelosAir 웹 사이트에서 값을 읽어내야 함. 
+
+이는 데이터 접근성이 떨어지고, 시스템 활용에 제약이 생긴다.
+
+
+**해결방안**: 센서 인터넷 연결 시 PC를 경유하게 하여 통신 내역을 확인, 플렛폼 서버로 전송
+<img width="478" height="276" alt="image" src="https://github.com/user-attachments/assets/f84168be-3de8-4fa0-a7b0-b44c0f0f21d3" />
+
+
+
+**수행내용**:
+
+(1) 센서 인터넷 연결 시, PC의 핫스팟을 통한 무선 연결로 PC를 경유하게 하고, 센서가 보내는 패킷의 구조 및 전송 방법 분석
+
+
+<img width="442" height="259" alt="image" src="https://github.com/user-attachments/assets/39eab49f-3477-4233-a0ec-122e011ea8d5" />
+
+
+
+(2) Scapy 라이브러리를 활용하여 패킷 스니핑 및 추출, JSON형태로 되어 있는 센서값을 HTTP POST 방식으로 플랫폼 서버로 전송(1분 주기)하는 프로그램 작성
+
+
+
+
+<img width="478" height="429" alt="image" src="https://github.com/user-attachments/assets/42816cfe-ded7-45bb-a01f-615b575b4f23" />
+
+
+
+
+
+ (3) 서버에서 정상적으로 센서 측정값이 수신됨을 확인했음
+
+
+ <img width="478" height="106" alt="image" src="https://github.com/user-attachments/assets/e4da00c9-a5ba-491f-b6d8-49caf6c01d38" />
+
+
+
+
 
 ---
 
