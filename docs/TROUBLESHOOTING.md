@@ -47,7 +47,7 @@
 ### 2) 🔧 Room ↔ Home 양방향 매핑으로 JSON 순환참조 문제
 
 **증상**  
-- `GET /homes`, `GET /homes/{id}`, `GET /homes/{homeId}/rooms` 응답이 수천 줄로 비정상적으로 커지거나 직렬화가 지연된다.  
+- `GET /homes`, `GET /homes/{id}`에서 응답이 수천 줄로 비정상적으로 커짐
 - `Home.rooms → Room.home → Home.rooms …` 순환으로 중첩이 반복된다.
 
 **원인**  
@@ -56,20 +56,12 @@
 
 **해결**  
 - **엔티티 대신 DTO 반환**으로 전환하고, 직렬화 **깊이를 1로 제한**한다.  
-- 매핑은 Service 레이어에서 수행하며 `HomeMapper`, `RoomMapper`를 사용한다.  
-- Room API는 **계층형 경로**(`/homes/{homeId}/rooms`)로 범위를 명확히 한다.
+- Service 레이어에서 엔티티→DTO 변환을 수행하여 표현 모델을 분리한다.
 
 **핵심 코드 (요약)**
 
 ```java
-// HomeService
-@Transactional(readOnly = true)
-public List<HomeResponseDto> getAllHomes() {
-    return homeRepository.findAll().stream()
-        .map(HomeMapper::toResponseDto)  // 엔티티 → DTO
-        .toList();
-}
-
+// HomeService — 엔티티 → DTO (핵심만)
 @Transactional(readOnly = true)
 public HomeResponseDto getHomeById(Long homeId) {
     Home home = homeRepository.findById(homeId)
@@ -78,56 +70,31 @@ public HomeResponseDto getHomeById(Long homeId) {
 }
 
 
-
-// RoomService
-@Transactional
-public RoomResponseDto createRoom(Long homeId, RoomRequestDto dto) {
-    Home home = homeRepository.findById(homeId)
-        .orElseThrow(() -> new ResourceNotFoundException("홈을 찾을 수 없습니다. id: " + homeId));
-    Room room = RoomMapper.toEntity(dto, null);
-    room.setHome(home);
-    return RoomMapper.toResponseDto(roomRepository.save(room));  // DTO 반환
-}
-
+// RoomService — 홈 하위 룸을 조회하고 DTO로 반환 (핵심만)
 @Transactional(readOnly = true)
 public List<RoomResponseDto> getAllRoomsByHomeId(Long homeId) {
     if (!homeRepository.existsById(homeId))
         throw new ResourceNotFoundException("홈을 찾을 수 없습니다. id: " + homeId);
     return roomRepository.findByHome_HomeId(homeId).stream()
-        .map(RoomMapper::toResponseDto)  // 엔티티 → DTO
+        .map(RoomMapper::toResponseDto)   // 엔티티 → DTO
         .toList();
 }
 
 
-
-
-// Controller — DTO만 반환 (발췌)
-@RestController @RequestMapping("/homes")
-@RequiredArgsConstructor
-public class HomeController {
-  private final HomeService homeService;
-  @GetMapping("/{homeId}")
-  public ResponseEntity<HomeResponseDto> getHomeById(@PathVariable Long homeId) {
+// Controller — DTO만 반환 (핵심만)
+@GetMapping("/{homeId}")
+public ResponseEntity<HomeResponseDto> getHomeById(@PathVariable Long homeId) {
     return ResponseEntity.ok(homeService.getHomeById(homeId));
-  }
 }
 
-@RestController @RequestMapping("/homes/{homeId}/rooms")
-@RequiredArgsConstructor
-public class RoomController {
-  private final RoomService roomService;
-  @GetMapping
-  public ResponseEntity<List<RoomResponseDto>> getAllRooms(@PathVariable Long homeId) {
-    return ResponseEntity.ok(roomService.getAllRoomsByHomeId(homeId));
-  }
-}
+
 ```
 
 
 **효과**
-- 응답이 필요 필드만 포함되며 크기 정상화, 직렬화 순환 제거로 지연/메모리 사용 감소.
-- 내부 엔티티 구조 노출을 막아 캡슐화가 강화된다.
+- 응답이 필요 필드만 포함되며 크기 정상화.
+- 직렬화 순환 제거로 지연/메모리 사용 감소.
+- 내부 엔티티 구조 노출을 막아 캡슐화가 강화됨.
 
-**재발 방지**
-- 컨트롤러에서 엔티티 직접 반환 금지 원칙 유지.
+
 
