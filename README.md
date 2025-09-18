@@ -326,7 +326,7 @@ backend/
 spring.datasource.url=${DB_URL}
 spring.datasource.username=${DB_USERNAME}
 spring.datasource.password=${DB_PASSWORD}
-spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.ddl-auto=update  # 개발 환경에서만 권장
 spring.jpa.show-sql=false
 spring.jackson.time-zone=Asia/Seoul
 jwt.secret=${JWT_SECRET}
@@ -338,7 +338,7 @@ external.weather.weatherbit.key=${WEATHERBIT_API_KEY}
 ### (2) MySQL 준비
 
 ```bash
-# Docker 예시
+# Docker 예시 (비밀번호는 반드시 안전한 값으로 변경)
 docker run -d --name air-mysql -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=air \
   -p 3306:3306 mysql:8
 ```
