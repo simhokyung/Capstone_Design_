@@ -271,6 +271,7 @@ AI는 이 정보를 받아 방 별로 **최적제어**를 내려 공기청정기
 
 ## 6) 폴더구조
 
+```bash
 backend/
 ├─ src/main/java/com/example/airqualityplatform
 │  ├─ controller/  # REST 컨트롤러 (Auth, Device, Sensor, Measurement, ...)
@@ -282,6 +283,8 @@ backend/
 │  └─ AirQualityPlatformApplication.java
 └─ src/main/resources/
    └─ application.properties (또는 application.yml)
+```
+
 
 ---
 
