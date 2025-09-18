@@ -1,3 +1,6 @@
+## 🔧 트러블슈팅
+---
+
 ### 1) 🔧센서와 서버 간 데이터 통신 구현 문제
 센서에서 측정값을 전송하는 서버가 TelosAir(센서 제조사) 서버로 고정되어 있어 플랫폼에서 센서의 측정값을 받으려면 TelosAir 웹 사이트에서 값을 읽어내야 함. 
 
@@ -35,7 +38,7 @@
  <img width="478" height="106" alt="image" src="https://github.com/user-attachments/assets/e4da00c9-a5ba-491f-b6d8-49caf6c01d38" />
 
 
-
+---
 
 
 ### 2) 🔧 Room ↔ Home 양방향 매핑으로 JSON 순환참조 문제
