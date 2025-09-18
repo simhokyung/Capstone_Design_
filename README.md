@@ -287,7 +287,8 @@ backend/
 │ ├─ security/ # JWT 필터/토큰/설정
 │ └─ AirQualityPlatformApplication.java
 └─ src/main/resources/
-├─ application.properties
+├─ application.properties (또는 application.yml)
+└─ schema.sql / data.sql
 
 ---
 
