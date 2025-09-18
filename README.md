@@ -1,4 +1,4 @@
-# 🏠가정용 공기질 관리 플랫폼 
+# 🏠가정용 공기질 관리 플랫폼 (Every Air)
 
 **AI 예측**과 **최적제어** 알고리즘을 적용해 
 
@@ -7,7 +7,7 @@
 
 ---
 
-## 개발 배경
+## 1) 개발 배경
 <img width="907" height="400" alt="image" src="https://github.com/user-attachments/assets/739a4e7d-c974-4601-a3e8-bc5a99267195" />
 
 
@@ -246,19 +246,19 @@ AI는 이 정보를 받아 방 별로 **최적제어**를 내려 공기청정기
 
 ---
 
-## 3) 나의 역할 (What I built)
+## 4) 나의 역할 (What I built)
 <img width="671" height="453" alt="image" src="https://github.com/user-attachments/assets/aa5d05c8-a96b-484f-851c-058f98b46433" />
 
 
 * 팀장으로, 백엔드 역할을 맡았다.
 * 아키텍처 설계, 도메인 모델링, ERD 테이블, API 명세서 등을 작성하였다.
 * 1분마다 수신되는 센서&공기청정기 데이터 -> DB저장 -> 병합하여 AI 서버에 전송하는 흐름 완성.
-* SmartThings/대기질 API 연동, 필터 수명 로직, 사용자 맞춤 제어 정책을 구현했다.
+* SmartThings/대기질 API 연동, 필터 수명 로직, 사용자 맞춤 제어 정책 등을 구현.
 * 스프링 서버를 AWS EC2에 배포.
 
 ---
 
-## 4) 기술 스택(백엔드) (Tech Stack)
+## 5) 기술 스택(백엔드) (Tech Stack)
 
 * **Language/Build**: Java 17, Gradle
 * **Framework**: Spring Boot, Spring Web, Spring Data JPA, Spring Security (JWT)
@@ -269,20 +269,35 @@ AI는 이 정보를 받아 방 별로 **최적제어**를 내려 공기청정기
 
 ---
 
-## 5) 시스템 구조 (Architecture)
+## 6) 시스템 구조 (Architecture)
 
 <img width="1333" height="620" alt="image" src="https://github.com/user-attachments/assets/4b855d61-8f65-437a-9538-9164070a3ef7" />
 
+---
+
+## 7) 폴더구조
+
+backend/
+├─ src/main/java/com/example/airqualityplatform
+│ ├─ controller/ # REST 컨트롤러 (Auth, Device, Sensor, Measurement, ...)
+│ ├─ service/ # 비즈니스 로직 (SmartThings, 필터수명, 스케줄러 포함)
+│ ├─ domain/ # JPA 엔티티
+│ ├─ repository/ # Spring Data JPA 리포지토리
+│ ├─ dto/ # 요청/응답 DTO
+│ ├─ security/ # JWT 필터/토큰/설정
+│ └─ AirQualityPlatformApplication.java
+└─ src/main/resources/
+├─ application.properties
 
 ---
 
-## 6) ERD
+## 8) ERD
 <img width="3316" height="5842" alt="diagram" src="https://github.com/user-attachments/assets/dc102fe8-46a0-47b0-ac81-8d37d68f1196" />
 
 
 ---
 
-## 7) 빠른 실행 (Local Quickstart)
+## 9) 빠른 실행 (Local Quickstart)
 
 ### (1) 환경 변수
 
@@ -333,13 +348,13 @@ java -jar build/libs/*-SNAPSHOT.jar
 * 서버 기본 포트: `8080`
 ---
 
-## 8) API 문서 & 사용 예시
+## 10) API 문서 
 
 **API 명세서 주소**: <https://solar-skate-88b.notion.site/API-1f31bcaecabd80ebb3aae45ffce4eaa4#2031bcaecabd80b1b0d8f06554be7522>
 
 ---
 
-## 10) 성과 (Numbers)
+## 11) 성과 (Numbers)
 
 <img width="795" height="181" alt="image" src="https://github.com/user-attachments/assets/99d4a92f-2301-4ea3-9719-0ec434b86a5d" />
 
@@ -349,9 +364,10 @@ LSTM 기반 공기질 예측 모델의 성능을 평가한 결과,
 
 ---
 
-## 11) 트러블슈팅
+## 12) 트러블슈팅
 
-추후에 추가 예정
+작성중..
+
 ---
 
 
