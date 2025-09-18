@@ -47,7 +47,7 @@
 ## 3) 앱 설명
 
 
-**홈 화면**
+### **홈 화면**
 
 <img width="213" height="522" alt="image" src="https://github.com/user-attachments/assets/29dd8504-17ba-4208-b57d-d0b171c3bb4c" />
 
@@ -63,7 +63,7 @@
 
 
 
-**실외 화면**
+### **실외 화면**
 
 <img width="229" height="551" alt="image" src="https://github.com/user-attachments/assets/bf084fe2-ed51-4104-94df-4a8ff4ae6390" /> <img width="225" height="550" alt="image" src="https://github.com/user-attachments/assets/242a24c6-2989-4dc5-9202-95904710d940" />
 
@@ -83,7 +83,7 @@
 
 
 
-**실내 화면**
+### **실내 화면**
 
 <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/90c85e16-41a6-4d0c-a35c-a6749140e624" /> <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/0fecb07e-70cf-4676-8c4f-7aa99e85f6d9" /> <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/4c8c996a-a8f8-4b10-9956-7d702c18a1c2" />
 
@@ -101,7 +101,7 @@
 
 
 
-**사용자 스케줄 & 관리기준치 설정**
+### **사용자 스케줄 & 관리기준치 설정**
 
 <img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/a3f832fe-86a8-49f8-903b-1d313ed5f0f8" /> <img width="241" height="572" alt="image" src="https://github.com/user-attachments/assets/c715fe92-ea56-4120-976a-5301305c49d2" />
 
@@ -124,7 +124,7 @@
 
 
 
-**자동제어**
+### **자동제어**
 
 <img width="241" height="574" alt="image" src="https://github.com/user-attachments/assets/d52d63a7-957a-4a03-a0a3-4b4c8152730f" /> <img width="241" height="567" alt="image" src="https://github.com/user-attachments/assets/ec393fb8-44e0-42f0-a431-ec0266575d08" />
 
