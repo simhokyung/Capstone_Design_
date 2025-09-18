@@ -167,7 +167,8 @@
 
 ### **사용자 스케줄 & 관리기준치 설정**
 
-<img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/a3f832fe-86a8-49f8-903b-1d313ed5f0f8" /> <img width="241" height="572" alt="image" src="https://github.com/user-attachments/assets/c715fe92-ea56-4120-976a-5301305c49d2" />
+<img width="242" height="591" alt="image" src="https://github.com/user-attachments/assets/a3f832fe-86a8-49f8-903b-1d313ed5f0f8" /> <img width="241" height="566" alt="image" src="https://github.com/user-attachments/assets/e9b97abe-52d1-4709-8bbf-cbb93cce6cf7" />
+
 
 
 
